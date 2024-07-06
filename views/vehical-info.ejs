@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Info</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 900px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+
+        .register-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .register-form h1 {
+            margin-bottom: 30px;
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .form-group input {
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            width: 48%;
+            font-size: 16px;
+        }
+
+        .form-group button {
+            padding: 12px;
+            border-radius: 6px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+
+        .thumbnail-preview {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .thumbnail-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        p a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+        } 
+
+        .alert-danger {
+            color: red;
+            text-align: center;
+        }
+
+        .alert_success {
+            color: green;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form action="/vehical-info" enctype="multipart/form-data" method="post" class="register-form" id="vehicleForm">
+
+            <% if (typeof msg !== 'undefined' && (success !== 'undefined' && success == true)) { %>
+                <div class="alert alert-success" role="alert">
+                    <%= msg %>
+                </div>
+            <% } else if (typeof msg !== 'undefined' && (success !== 'undefined' && success == false)) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= msg %>
+                </div>
+            <% } %> 
+
+            <h1>Vehicle Details</h1>
+
+            <div class="form-group">
+                <input type="text" id="carModel" name="carModel" placeholder="Car Model">
+                <input type="number" style="margin-left: 20px;" id="price" name="price" placeholder="Price">
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="color" name="color" placeholder="Car Color">
+                <input type="text" id="ownerName" style="margin-left: 20px;" name="ownerName" placeholder="Car Owner Name">
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="phone" name="phone" placeholder="Phone">
+                <input type="text" id="city" style="margin-left: 20px;" name="city" placeholder="City">
+            </div>
+
+           
+
+            <div id="imageInputsContainer">
+               
+            </div>
+
+            <div class="form-group" style="float: inline-end;">
+                <button type="button" style="background-color: green;" onclick="addImageInput()">Add images</button>
+            </div>
+            <div class="form-group">
+                <button type="submit">Submit</button>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        function addImageInput() {
+            var existingInputs = document.querySelectorAll('input[type="file"]');
+            var numInputs = existingInputs.length;
+
+          
+            if (numInputs >= 9) {
+                alert("Maximum 9 image inputs allowed.");
+                return;
+            }
+
+            var newInput = document.createElement('input');
+            newInput.type = 'file';
+            newInput.name = 'images';
+            newInput.style.width = '100%';
+            newInput.accept = 'image/*';
+
+            var container = document.getElementById('imageInputsContainer');
+            var newInputGroup = document.createElement('div');
+            newInputGroup.classList.add('form-group', 'thumbnail-container');
+
+            var thumbnail = document.createElement('img');
+            thumbnail.classList.add('thumbnail-preview');
+            thumbnail.style.display = 'none'; 
+
+            newInputGroup.appendChild(thumbnail);
+            newInputGroup.appendChild(newInput);
+            container.appendChild(newInputGroup);
+
+            newInput.addEventListener('change', function() {
+                if (newInput.files && newInput.files[0]) {
+                    thumbnail.src = URL.createObjectURL(newInput.files[0]);
+                    thumbnail.style.display = 'block'; 
+                }
+            });
+        }
+    </script>
+</body>
+</html>
